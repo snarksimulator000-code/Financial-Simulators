@@ -1,0 +1,48 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+class Product { // Les produits vendues 
+protected:
+    std::string name;
+    double price;
+    
+public:
+    Product(std::string n, double p) : name(n), price(p){} //constructor
+    
+    virtual void Display() const {
+        std::cout << name << " - " << price << "€\n";
+    }
+    
+};
+
+class Macaron : public Product {
+private:
+    std::string flavour;
+    int quantity;
+    
+public:
+    Macaron(double p, std::string f, int q) : Product("Macaron", p), flavour(f), quantity(q) {} 
+    
+    void Display() const override {
+        std::cout << name << " - " << price << "€ for " << quantity << " - " << flavour << "\n";
+    }
+    
+};
+
+int main() {
+  std::vector<Product*> Bakery;
+  Bakery.push_back(new Product("Paris Brest", 2.55));
+  Bakery.push_back(new Macaron(5.35, "Vanilla", 12));
+  Bakery.push_back(new Macaron(2.65, "Lemon", 6));
+
+std::cout << " ====== MENU ====== " << "\n";
+for (auto& c : Bakery){
+    c->Display();
+}
+
+for (auto& c : Bakery) delete c;
+    Bakery.clear();
+
+    return 0;
+}
