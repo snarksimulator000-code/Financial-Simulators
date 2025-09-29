@@ -1,0 +1,30 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+class Produit { // Les produits vendues 
+private:
+    std::string Flavour;
+    double price;
+    
+public:
+    Produit(std::string F, double p) : Flavour(F), price(p){} //constructor
+    
+    void Display(){
+        std::cout << Flavour << " - " << price << "€\n";
+    }
+    
+};
+
+int main() {
+  std::vector<Produit> Bakery;
+  Bakery.push_back(Produit("Chocolate", 2.55));
+  Bakery.push_back(Produit("Lemon", 2.35));
+
+std::cout << " ====== MENU ====== " << "\n";
+for (auto& c : Bakery){
+    c.Display();
+}
+
+    return 0;
+}
