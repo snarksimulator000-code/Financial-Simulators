@@ -1,0 +1,97 @@
+// Update: added user input. Users can now choose product and quantity
+#include <iostream>
+#include <vector>
+#include <string>
+
+class Product { // Products sold 
+protected:
+    std::string name;
+    double price;
+    
+public:
+    Product(std::string n, double p) : name(n), price(p) {} //constructor
+    double getprice () const { return price; } //Getter
+    std::string getname () const { return name; }
+    
+    virtual void Display() const {
+        std::cout << name << " - " << price << "€\n";
+    }
+    
+};
+// Inherited classes
+class Macaron : public Product {
+private:
+    std::string flavour;
+    
+public:
+    Macaron(double p, std::string f) : Product("Macaron", p), flavour(f) {} 
+    
+    void Display() const override {
+        std::cout << name << " - " << price << "€ - " << flavour << "\n";
+    }
+    
+};
+class Croissant : public Product {
+private:
+    std::string Add_on; //choose what to put on croissant
+public:
+    Croissant(double p, std::string a) : Product("Croissant", p), Add_on(a) {}
+    
+    void Display() const override {
+        std::cout << Add_on << " " << name << " - " << price << "€\n";
+    }
+};
+
+class Order { //Client choose product and quantity. 
+private:
+    Product& product;
+    int quantity;
+public: 
+    Order(Product& p, int q) : product(p), quantity(q) {}
+    
+    void Receipt () const {
+        product.Display();
+        std::cout << " x " << quantity << " = " << product.getprice() * quantity << "€\n";
+    }
+    
+};
+
+int main() {
+  std::vector<Product*> Bakery;
+  Bakery.push_back(new Product("Paris Brest", 2.55));
+  Bakery.push_back(new Macaron(10.49, "Vanilla"));
+  Bakery.push_back(new Croissant(3.49, "Ham and Cheese"));
+  Bakery.push_back(new Croissant(3.49, "Blackberry"));
+
+std::vector<Order> ClientOrders; 
+int quantity, choice;
+
+std::cout << "====== MENU ======\n";
+for (size_t i = 0; i < Bakery.size(); i++){
+    Bakery[i]->Display();
+}
+
+std::cout << "==============================================\n";
+
+std::cout << "Hello, what would you like today? Tap in a number \n";
+std::cin >> choice;
+
+std::cout << "Ok, how many? \n";
+std::cin >> quantity; 
+
+std::cout << "Thank you for ordering. Please wait at the till\n";
+
+std::cout << "==============================================\n";
+
+ClientOrders.push_back(Order(*Bakery[choice], quantity));
+
+std::cout << "====== YOUR ORDER ======\n";
+for (auto& o : ClientOrders){
+    o.Receipt(); //Gives the name of object, but not specific product
+}
+
+for (auto& c : Bakery) delete c;
+    Bakery.clear();
+
+    return 0;
+}
